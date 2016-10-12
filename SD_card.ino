@@ -30,7 +30,7 @@ float zAxisValmV = 0;
 float fxAxis = 0.0;
 float fyAxis = 0.0;
 float fzAxis = 0.0;
-
+float fAxis = 0.0;
  
 //My Arduino Uno has a 10-bit
 //AD converter, with a max value
@@ -61,9 +61,11 @@ float mVPerADC = mVMaxVal / ADCMaxVal;
 const int SD_pin = 10;
 
 //variables to manage delay
-unsigned long SD_start_time = millis();
-unsigned long SD_wait_time = 400;
-unsigned long SD_target_time = millis()+SD_wait_time;
+//unsigned long SD_start_time = millis();
+//unsigned long SD_wait_time = 400;
+//unsigned long SD_target_time = millis()+SD_wait_time;
+
+int monitor = 0; 
 
 String SD_file_ext = ".csv";
 
@@ -113,7 +115,10 @@ void log_file_sd(String filename,String msg)
 
 void log_sd()
 {
-  SD_report_file_name =(String) "Data" + SD_file_ext;
+  int m = millis() / 60*1000;
+  
+  SD_report_file_name =(String) "Data_" + SD_file_ext;
+  
   log_file_sd(SD_report_file_name,SD_report_string);
   SD_report_string = "";
 }
@@ -131,8 +136,9 @@ void prepare_report()
   fxAxis = (xAxisValmV - supplyMidPointmV) / mVperg;
   fyAxis = (yAxisValmV - supplyMidPointmV) / mVperg;
   fzAxis = (zAxisValmV - supplyMidPointmV) / mVperg;
-
-  String temp = (String) fxAxis + "," + (String) fyAxis+ "," + (String) fzAxis ;
+  fAxis = sqrt(fxAxis*fxAxis+fyAxis*fyAxis+fzAxis*fzAxis);
+  
+  String temp = (String) fxAxis + "," + (String) fyAxis+ "," + (String) fzAxis + "," + (String) fAxis;
   log_report(temp);
  
 }
@@ -140,10 +146,12 @@ void prepare_report()
 
 void loop() {
 
-  if(SD_target_time <= millis())
-  {
+//  if(SD_target_time <= millis())
+//  {
       prepare_report();
       log_sd(); //log to SD
-      SD_target_time += SD_wait_time;
-  }
+//      SD_target_time += SD_wait_time;
+//  }
+      
+     delay(800);
 }
