@@ -65,7 +65,7 @@ unsigned long SD_start_time = millis();
 unsigned long SD_wait_time = 400;
 unsigned long SD_target_time = millis()+SD_wait_time;
 
-String SD_file_ext = ".txt";
+String SD_file_ext = ".csv";
 
 String SD_report_file_name = "";
 String SD_report_string = "";
@@ -89,22 +89,6 @@ void setup() {
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
 }
-
-///*check number and format for a string*/
-//String num_check(int num)
-//{
-//  if (num < 10)
-//    return "0"+(String)num;
-//  else
-//    return (String)num;
-//}
-//
-///*convert hr,min and sec to string*/
-//String get_time_string(int hour, int minute, int second)
-//{
-//  return num_check(hour)+":"+num_check(minute)+":"+num_check(second);
-//}
-
 
 /*function to queue report message */
 void log_report(String msg){
@@ -148,17 +132,9 @@ void prepare_report()
   fyAxis = (yAxisValmV - supplyMidPointmV) / mVperg;
   fzAxis = (zAxisValmV - supplyMidPointmV) / mVperg;
 
-  String temp = (String) fxAxis + "," + (String) fyAxis+ "," + (String) fzAxis + "\n";
-//  
-//  Serial.print();
-//  Serial.print(",");
-//  Serial.print();
-//  Serial.print(",");
-//  Serial.print();
-//  Serial.println();
-
+  String temp = (String) fxAxis + "," + (String) fyAxis+ "," + (String) fzAxis ;
   log_report(temp);
-  //Serial.println(SD_report_string);
+ 
 }
 
 
